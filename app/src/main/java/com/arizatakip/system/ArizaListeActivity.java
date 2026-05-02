@@ -53,6 +53,8 @@ public class ArizaListeActivity extends AppCompatActivity {
             intent.putExtra("durum", ariza.getDurum());
             intent.putExtra("tarih", ariza.getTarih());
             intent.putExtra("olusturan", ariza.getOlusturanKisi());
+            intent.putExtra("atanan", ariza.getAtananKisi());
+            intent.putExtra("aciliyet", ariza.getAciliyetDerecesi());
             startActivity(intent);
         });
 

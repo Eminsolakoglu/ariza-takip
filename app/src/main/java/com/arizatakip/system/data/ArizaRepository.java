@@ -16,14 +16,15 @@ public class ArizaRepository {
 
     // addAriza metodunu şu şekilde değiştir:
 // addAriza metodunda yeni arıza açıldığında henüz kimseye atanmadığı için boş bırakıyoruz
-    public static void addAriza(String baslik, String aciklama, String olusturanKisi) {
+    public static void addAriza(String baslik, String aciklama, String olusturanKisi, String aciliyetDerecesi) {
         Ariza ariza = new Ariza(
                 baslik,
                 aciklama,
                 "OPEN",
                 String.valueOf(System.currentTimeMillis()),
                 olusturanKisi,
-                "Atanmadı" // Yeni arıza başta sahipsizdir
+                "Atanmadı",
+                aciliyetDerecesi
         );
         db.arizaDao().insert(ariza);
     }
@@ -47,5 +48,13 @@ public class ArizaRepository {
     }
     public static List<Ariza> getByKullanici(String kisi) {
         return db.arizaDao().getByKullanici(kisi);
+    }
+
+    public static Ariza getById(int id) {
+        return db.arizaDao().getById(id);
+    }
+
+    public static void updateAriza(int id, String baslik, String aciklama, String aciliyetDerecesi) {
+        db.arizaDao().updateAriza(id, baslik, aciklama, aciliyetDerecesi);
     }
 }

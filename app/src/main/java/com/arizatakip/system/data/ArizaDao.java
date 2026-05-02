@@ -31,4 +31,10 @@ public interface ArizaDao {
     // Arızayı ID'sine göre kalıcı olarak siler
     @Query("DELETE FROM arizalar WHERE id = :id")
     void deleteById(int id);
+
+    @Query("SELECT * FROM arizalar WHERE id = :id LIMIT 1")
+    Ariza getById(int id);
+
+    @Query("UPDATE arizalar SET baslik = :baslik, aciklama = :aciklama, aciliyetDerecesi = :aciliyetDerecesi WHERE id = :id")
+    void updateAriza(int id, String baslik, String aciklama, String aciliyetDerecesi);
 }

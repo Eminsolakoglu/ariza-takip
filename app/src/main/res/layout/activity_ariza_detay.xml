@@ -57,14 +57,33 @@
                     android:background="@drawable/bg_meta_info"
                     android:padding="16dp">
 
-                    <TextView
-                        android:id="@+id/tvDurum"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textColor="#2B2D42"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"/>
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:id="@+id/tvDurum"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#2B2D42"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/tvAciliyet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:text="Normal" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvAtanan"
@@ -92,6 +111,18 @@
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDuzenle"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="12dp"
+            app:cornerRadius="12dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:text="ARIZA KAYDINI DÜZENLE"
+            android:textColor="@color/primaryColor"
+            app:strokeColor="@color/primaryColor"
+            android:visibility="gone"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDurum"
