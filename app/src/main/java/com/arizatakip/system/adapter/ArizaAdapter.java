@@ -1,6 +1,7 @@
 package com.arizatakip.system.adapter;
 
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,14 +36,15 @@ public class ArizaAdapter extends RecyclerView.Adapter<ArizaAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBaslik, tvAciklama;
-        View viewStatusIndicator; // YENİ: Renk çizgisini tanımladık
+        TextView tvBaslik, tvAciklama, tvAciliyet;
+        View viewStatusIndicator;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvBaslik = itemView.findViewById(R.id.tvBaslik);
             tvAciklama = itemView.findViewById(R.id.tvAciklama);
-            viewStatusIndicator = itemView.findViewById(R.id.viewStatusIndicator); // YENİ: ID'yi eşleştirdik
+            tvAciliyet = itemView.findViewById(R.id.tvAciliyet);
+            viewStatusIndicator = itemView.findViewById(R.id.viewStatusIndicator);
         }
     }
 
@@ -56,14 +58,12 @@ public class ArizaAdapter extends RecyclerView.Adapter<ArizaAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         Ariza ariza = list.get(position);
 
         holder.tvBaslik.setText(ariza.getBaslik());
         holder.tvAciklama.setText(ariza.getAciklama());
 
         String durum = (ariza.getDurum() != null) ? ariza.getDurum().toUpperCase() : "";
-
         switch (durum) {
             case "OPEN":
                 holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#F57C00"));
@@ -78,6 +78,37 @@ public class ArizaAdapter extends RecyclerView.Adapter<ArizaAdapter.ViewHolder> 
                 holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#F57C00"));
                 break;
         }
+
+        String aciliyet = (ariza.getAciliyetDerecesi() != null) ? ariza.getAciliyetDerecesi().toUpperCase() : "NORMAL";
+        String aciliyetLabel;
+        int badgeBgColor;
+        int badgeTextColor;
+
+        switch (aciliyet) {
+            case "ORTA":
+                aciliyetLabel = "Orta";
+                badgeBgColor = Color.parseColor("#FFF3E0");
+                badgeTextColor = Color.parseColor("#E65100");
+                break;
+            case "COK":
+                aciliyetLabel = "Çok Acil";
+                badgeBgColor = Color.parseColor("#FFEBEE");
+                badgeTextColor = Color.parseColor("#C62828");
+                break;
+            default:
+                aciliyetLabel = "Normal";
+                badgeBgColor = Color.parseColor("#E8F5E9");
+                badgeTextColor = Color.parseColor("#2E7D32");
+                break;
+        }
+
+        holder.tvAciliyet.setText(aciliyetLabel);
+        holder.tvAciliyet.setTextColor(badgeTextColor);
+        GradientDrawable badge = new GradientDrawable();
+        badge.setShape(GradientDrawable.RECTANGLE);
+        badge.setCornerRadius(32f);
+        badge.setColor(badgeBgColor);
+        holder.tvAciliyet.setBackground(badge);
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onClick(ariza);
