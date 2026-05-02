@@ -1,0 +1,50 @@
+trigger:
+- dev
+- master
+
+pool:
+  vmImage: 'macos-latest' # Kendi Mac bilgisayarını bağladığımızda burayı değiştireceğiz.
+
+steps:
+# 1. Mac/Linux ortamlarında gradlew'un çalışma izni olması gerekir. Bu komut hayat kurtarır, yoksa "Permission Denied" hatası alırsın.
+- script: chmod +x gradlew
+  displayName: 'Gradle Yetkilendirmesi (chmod +x)'
+
+# 2. DEV branch'i için sadece Debug APK üret (Hızlı çalışır, test içindir)
+- task: Gradle@2
+  displayName: 'Dev: Build Debug APK'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleDebug'
+
+# 3. MASTER branch'i için Release APK üret (Canlıya hazır, optimize versiyon)
+- task: Gradle@2
+  displayName: 'Master: Build Release APK'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    publishJUnitResults: false
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'assembleRelease'
+
+# 4. Üretilen APK dosyasını bulup geçici bir klasöre kopyala
+- task: CopyFiles@2
+  displayName: 'APK Dosyalarını Kopyala'
+  inputs:
+    contents: '**/*.apk'
+    targetFolder: '$(build.artifactStagingDirectory)'
+
+# 5. Kopyalanan APK'yı Pipeline ekranında "İndirilebilir" hale getir
+- task: PublishBuildArtifacts@1
+  displayName: 'APK Dosyasını Yayımla (Artifact Olarak)'
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)'
+    artifactName: 'Android-App-APK'
+    publishLocation: 'Container'
