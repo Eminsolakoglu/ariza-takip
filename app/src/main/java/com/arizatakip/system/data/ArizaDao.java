@@ -37,4 +37,7 @@ public interface ArizaDao {
 
     @Query("UPDATE arizalar SET baslik = :baslik, aciklama = :aciklama, aciliyetDerecesi = :aciliyetDerecesi, konum = :konum, kategori = :kategori WHERE id = :id")
     void updateAriza(int id, String baslik, String aciklama, String aciliyetDerecesi, String konum, String kategori);
+
+    @Query("UPDATE arizalar SET gorseller = :gorseller WHERE id = :id")
+    void updateGorseller(int id, String gorseller);
 }

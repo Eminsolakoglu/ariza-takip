@@ -69,7 +69,7 @@ public class ArizaAdapter extends RecyclerView.Adapter<ArizaAdapter.ViewHolder> 
                 holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#F57C00"));
                 break;
             case "IN_PROGRESS":
-                holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#FBC02D"));
+                holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#F9A825"));
                 break;
             case "CLOSED":
                 holder.viewStatusIndicator.setBackgroundColor(Color.parseColor("#388E3C"));
@@ -87,18 +87,18 @@ public class ArizaAdapter extends RecyclerView.Adapter<ArizaAdapter.ViewHolder> 
         switch (aciliyet) {
             case "ORTA":
                 aciliyetLabel = "Orta";
-                badgeBgColor = Color.parseColor("#FFF3E0");
-                badgeTextColor = Color.parseColor("#E65100");
+                badgeBgColor = Color.parseColor("#E3EAF6");
+                badgeTextColor = Color.parseColor("#2E6DC4");
                 break;
             case "COK":
                 aciliyetLabel = "Çok Acil";
-                badgeBgColor = Color.parseColor("#FFEBEE");
-                badgeTextColor = Color.parseColor("#C62828");
+                badgeBgColor = Color.parseColor("#EBF2FC");
+                badgeTextColor = Color.parseColor("#0F3D7A");
                 break;
             default:
                 aciliyetLabel = "Normal";
-                badgeBgColor = Color.parseColor("#E8F5E9");
-                badgeTextColor = Color.parseColor("#2E7D32");
+                badgeBgColor = Color.parseColor("#F0F3F7");
+                badgeTextColor = Color.parseColor("#4A5568");
                 break;
         }
 

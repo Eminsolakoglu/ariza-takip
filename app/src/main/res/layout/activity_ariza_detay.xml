@@ -4,22 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#F8F9FA">
+    android:background="@color/backgroundColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="20dp">
 
+        <!-- Main Info Card -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
+            app:cardCornerRadius="14dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
-            app:strokeColor="#E9ECEF"
-            android:layout_marginBottom="32dp">
+            app:strokeColor="@color/borderColor"
+            app:cardBackgroundColor="@color/cardBackground"
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -29,27 +31,30 @@
 
                 <TextView
                     android:id="@+id/tvBaslik"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:textColor="#2B2D42"
+                    android:textColor="@color/textColorPrimary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="2dp" />
 
                 <TextView
                     android:id="@+id/tvAciklama"
                     android:layout_marginTop="12dp"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:lineSpacingExtra="6dp"
-                    android:textColor="#4A4E69"
+                    android:textColor="@color/textColorSecondary"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
+                <!-- Divider -->
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="#F1F3F5"
-                    android:layout_marginVertical="20dp"/>
+                    android:background="@color/borderColor"
+                    android:layout_marginVertical="20dp" />
 
+                <!-- Meta Info Block -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -57,21 +62,22 @@
                     android:background="@drawable/bg_meta_info"
                     android:padding="16dp">
 
+                    <!-- Status row + priority badge -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:gravity="center_vertical"
-                        android:layout_marginBottom="8dp">
+                        android:layout_marginBottom="10dp">
 
                         <TextView
                             android:id="@+id/tvDurum"
-                            android:textSize="15sp"
+                            android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2B2D42"
+                            android:textColor="@color/textColorPrimary"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" />
 
                         <TextView
                             android:id="@+id/tvAciliyet"
@@ -85,6 +91,7 @@
 
                     </LinearLayout>
 
+                    <!-- Location + Category row -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -96,9 +103,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:drawablePadding="6dp"
                             android:textSize="13sp"
-                            android:textColor="#495057"/>
+                            android:textColor="@color/textColorSecondary" />
 
                         <TextView
                             android:id="@+id/tvKategori"
@@ -106,91 +112,153 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:textSize="13sp"
-                            android:textColor="#495057"/>
+                            android:textColor="@color/textColorSecondary" />
 
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tvAtanan"
-                        android:textSize="14sp"
+                        android:textSize="13sp"
                         android:textColor="@color/primaryColor"
                         android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"/>
+                        android:layout_marginBottom="6dp" />
 
                     <TextView
                         android:id="@+id/tvOlusturan"
                         android:textSize="13sp"
-                        android:textColor="#6C757D"
+                        android:textColor="@color/textColorSecondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"/>
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/tvTarih"
                         android:textSize="12sp"
-                        android:textColor="#ADB5BD"
+                        android:textColor="@color/textColorMuted"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content" />
+
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Image Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cardGorseller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:cardCornerRadius="14dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/borderColor"
+            app:cardBackgroundColor="@color/cardBackground">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="14dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="Görseller"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Maks. 3"
+                        android:textColor="@color/textColorMuted"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@+id/llImageSlots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingVertical="4dp" />
+
+                </HorizontalScrollView>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Action Buttons -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDuzenle"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginBottom="12dp"
-            app:cornerRadius="12dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="10dp"
+            app:cornerRadius="10dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:text="ARIZA KAYDINI DÜZENLE"
             android:textColor="@color/primaryColor"
             app:strokeColor="@color/primaryColor"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnDurum"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
+            android:layout_height="52dp"
+            app:cornerRadius="10dp"
             android:text="DURUM GÜNCELLE"
             app:backgroundTint="@color/primaryColor"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnTeknikerAta"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            app:cornerRadius="12dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="10dp"
+            app:cornerRadius="10dp"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:text="TEKNİKER ATA"
             android:textColor="@color/primaryColor"
             app:strokeColor="@color/primaryColor"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSil"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
+            android:layout_height="52dp"
+            app:cornerRadius="10dp"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:text="ARIZA KAYDINI SİL"
-            android:textColor="#D32F2F"
-            android:visibility="gone"/>
+            android:textColor="@color/textColorMuted"
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnBack"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
+            android:layout_height="52dp"
+            app:cornerRadius="10dp"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:text="GERİ DÖN"
-            android:textColor="#6C757D"/>
+            android:textColor="@color/textColorSecondary" />
 
     </LinearLayout>
 </ScrollView>

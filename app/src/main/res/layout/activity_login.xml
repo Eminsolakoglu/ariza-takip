@@ -3,38 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F8F9FA">
+    android:background="@color/backgroundColor">
 
     <LinearLayout
         android:id="@+id/headerLayout"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:background="@color/primaryColor"
+        android:layout_height="260dp"
+        android:background="@color/primaryDarkColor"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:src="@android:drawable/ic_menu_manage"
-            app:tint="#FFFFFF"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="20dp"
+            app:tint="#FFFFFF" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Arıza Takip Sistemi"
             android:textColor="#FFFFFF"
-            android:textSize="28sp"
-            android:textStyle="bold" />
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.03" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Devam etmek için lütfen giriş yapın"
-            android:textColor="#E0E0E0"
-            android:textSize="15sp" />
+            android:textColor="#B8C8DC"
+            android:textSize="14sp" />
+
     </LinearLayout>
 
     <com.google.android.material.card.MaterialCardView
@@ -43,10 +45,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/headerLayout"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="-44dp"
         app:cardCornerRadius="16dp"
-        app:cardElevation="8dp"
-        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@color/cardBackground"
         app:strokeWidth="0dp">
 
         <LinearLayout
@@ -60,10 +62,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxStrokeColor="@color/primaryColor"
+                app:hintTextColor="@color/primaryColor"
                 app:startIconDrawable="@android:drawable/ic_menu_myplaces"
                 app:startIconTint="@color/primaryColor">
 
@@ -72,18 +76,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Kullanıcı Adı"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:textColor="@color/textColorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:boxCornerRadiusBottomEnd="12dp"
-                app:boxCornerRadiusBottomStart="12dp"
-                app:boxCornerRadiusTopEnd="12dp"
-                app:boxCornerRadiusTopStart="12dp"
+                android:layout_marginBottom="28dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxStrokeColor="@color/primaryColor"
+                app:hintTextColor="@color/primaryColor"
                 app:passwordToggleEnabled="true"
                 app:startIconDrawable="@android:drawable/ic_lock_idle_lock"
                 app:startIconTint="@color/primaryColor">
@@ -93,18 +100,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Şifre"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textColor="@color/textColorPrimary" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="52dp"
                 android:text="GİRİŞ YAP"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
+                android:letterSpacing="0.08"
                 app:backgroundTint="@color/primaryColor"
-                app:cornerRadius="12dp" />
+                app:cornerRadius="10dp" />
 
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
@@ -114,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/loginCard"
         android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/bg_meta_info"
         android:orientation="vertical"
         android:padding="16dp">
@@ -124,17 +133,17 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Hızlı Test Hesapları"
-            android:textColor="#2B2D42"
-            android:textSize="14sp"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="• Yönetici: admin / 1234\n• Tekniker: tech / 1234\n• Müşteri: client / 1234"
-            android:textColor="#4A4E69"
+            android:textColor="@color/textColorSecondary"
             android:textSize="13sp"
-            android:lineSpacingExtra="6dp"/>
+            android:lineSpacingExtra="6dp" />
     </LinearLayout>
 
 </RelativeLayout>

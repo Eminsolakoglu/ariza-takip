@@ -2,5 +2,38 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#4361EE</color>     <color name="primaryDarkColor">#3A0CA3</color> <color name="secondaryColor">#4CC9F0</color>   <color name="backgroundColor">#F8F9FA</color>  <color name="textColorPrimary">#2B2D42</color> <color name="statusOpen">#4361EE</color>       <color name="statusInProgress">#F72585</color> <color name="statusClosed">#8D99AE</color>     <color name="cardBackground">#FFFFFF</color>
+
+    <!-- Primary Blues -->
+    <color name="primaryColor">#1A56A0</color>
+    <color name="primaryDarkColor">#0F3D7A</color>
+    <color name="primaryLightColor">#2E6DC4</color>
+    <color name="primarySurface">#EBF2FC</color>
+
+    <!-- Backgrounds -->
+    <color name="backgroundColor">#F4F6F9</color>
+    <color name="cardBackground">#FFFFFF</color>
+    <color name="metaBackground">#F0F3F7</color>
+
+    <!-- Typography -->
+    <color name="textColorPrimary">#1A2332</color>
+    <color name="textColorSecondary">#4A5568</color>
+    <color name="textColorMuted">#8896A8</color>
+
+    <!-- Borders & Dividers -->
+    <color name="borderColor">#DCE2EA</color>
+
+    <!-- Status indicator stripes -->
+    <color name="statusOpen">#1A56A0</color>
+    <color name="statusInProgress">#2E6DC4</color>
+    <color name="statusClosed">#8896A8</color>
+
+    <!-- Priority badge backgrounds -->
+    <color name="badgeCriticalBg">#EBF2FC</color>
+    <color name="badgeMediumBg">#E3EAF6</color>
+    <color name="badgeNormalBg">#F0F3F7</color>
+
+    <!-- Priority badge text -->
+    <color name="badgeCriticalText">#0F3D7A</color>
+    <color name="badgeMediumText">#1A56A0</color>
+    <color name="badgeNormalText">#4A5568</color>
 </resources>
