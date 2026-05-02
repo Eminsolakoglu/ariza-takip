@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("olusturan", ariza.getOlusturanKisi());
             intent.putExtra("atanan", ariza.getAtananKisi());
             intent.putExtra("aciliyet", ariza.getAciliyetDerecesi());
+            intent.putExtra("konum", ariza.getKonum());
+            intent.putExtra("kategori", ariza.getKategori());
             startActivity(intent);
         });
 

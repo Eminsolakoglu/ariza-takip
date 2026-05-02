@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class ArizaDetayActivity extends AppCompatActivity {
 
-    TextView tvBaslik, tvAciklama, tvDurum, tvTarih, tvAtanan, tvOlusturan, tvAciliyet;
+    TextView tvBaslik, tvAciklama, tvDurum, tvTarih, tvAtanan, tvOlusturan, tvAciliyet, tvKonum, tvKategori;
     Button btnBack, btnDurum, btnTeknikerAta, btnSil, btnDuzenle;
     SessionManager sessionManager;
     String role;
@@ -47,6 +47,8 @@ public class ArizaDetayActivity extends AppCompatActivity {
         tvAtanan = findViewById(R.id.tvAtanan);
         tvOlusturan = findViewById(R.id.tvOlusturan);
         tvAciliyet = findViewById(R.id.tvAciliyet);
+        tvKonum = findViewById(R.id.tvKonum);
+        tvKategori = findViewById(R.id.tvKategori);
 
         btnBack = findViewById(R.id.btnBack);
         btnDurum = findViewById(R.id.btnDurum);
@@ -70,6 +72,8 @@ public class ArizaDetayActivity extends AppCompatActivity {
             editIntent.putExtra("editBaslik", ariza.getBaslik());
             editIntent.putExtra("editAciklama", ariza.getAciklama());
             editIntent.putExtra("editAciliyet", ariza.getAciliyetDerecesi());
+            editIntent.putExtra("editKonum", ariza.getKonum());
+            editIntent.putExtra("editKategori", ariza.getKategori());
             startActivity(editIntent);
         });
 
@@ -137,6 +141,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
         applyDurumText(intent.getStringExtra("durum"));
         applyAciliyetBadge(intent.getStringExtra("aciliyet"));
         applyTarih(intent.getStringExtra("tarih"));
+        applyMetaLabels(intent.getStringExtra("konum"), intent.getStringExtra("kategori"));
         applyButtonVisibility(intent.getStringExtra("atanan"));
     }
 
@@ -151,6 +156,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
         applyDurumText(ariza.getDurum());
         applyAciliyetBadge(ariza.getAciliyetDerecesi());
         applyTarih(ariza.getTarih());
+        applyMetaLabels(ariza.getKonum(), ariza.getKategori());
         applyButtonVisibility(ariza.getAtananKisi());
     }
 
@@ -185,6 +191,11 @@ public class ArizaDetayActivity extends AppCompatActivity {
         badge.setCornerRadius(32f);
         badge.setColor(bgColor);
         tvAciliyet.setBackground(badge);
+    }
+
+    private void applyMetaLabels(String konum, String kategori) {
+        tvKonum.setText("📍 " + (konum != null && !konum.isEmpty() ? konum : "—"));
+        tvKategori.setText("🏷 " + (kategori != null && !kategori.isEmpty() ? kategori : "—"));
     }
 
     private void applyTarih(String tarih) {

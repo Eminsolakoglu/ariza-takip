@@ -16,8 +16,10 @@ public class Ariza {
     private String atananKisi;
     private String olusturanKisi;
     private String aciliyetDerecesi;
+    private String konum;
+    private String kategori;
 
-    public Ariza(String baslik, String aciklama, String durum, String tarih, String olusturanKisi, String atananKisi, String aciliyetDerecesi) {
+    public Ariza(String baslik, String aciklama, String durum, String tarih, String olusturanKisi, String atananKisi, String aciliyetDerecesi, String konum, String kategori) {
         this.baslik = baslik;
         this.aciklama = aciklama;
         this.durum = durum;
@@ -25,6 +27,8 @@ public class Ariza {
         this.olusturanKisi = olusturanKisi;
         this.atananKisi = atananKisi;
         this.aciliyetDerecesi = aciliyetDerecesi;
+        this.konum = konum;
+        this.kategori = kategori;
     }
 
     public int getId() { return id; }
@@ -39,4 +43,8 @@ public class Ariza {
     public void setOlusturanKisi(String olusturanKisi) { this.olusturanKisi = olusturanKisi; }
     public String getAciliyetDerecesi() { return aciliyetDerecesi; }
     public void setAciliyetDerecesi(String aciliyetDerecesi) { this.aciliyetDerecesi = aciliyetDerecesi; }
+    public String getKonum() { return konum; }
+    public void setKonum(String konum) { this.konum = konum; }
+    public String getKategori() { return kategori; }
+    public void setKategori(String kategori) { this.kategori = kategori; }
 }

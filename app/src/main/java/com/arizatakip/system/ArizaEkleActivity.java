@@ -17,12 +17,25 @@ import com.google.android.material.textfield.TextInputEditText;
 public class ArizaEkleActivity extends AppCompatActivity {
 
     TextInputEditText etBaslik, etAciklama;
-    AutoCompleteTextView actvAciliyet;
+    AutoCompleteTextView actvAciliyet, actvKonum, actvKategori;
     Button btnKaydet;
     TextView tvTitle;
 
     private static final String[] ACILIYET_LABELS = {"Normal", "Orta", "Çok Acil"};
     private static final String[] ACILIYET_VALUES = {"NORMAL", "ORTA", "COK"};
+
+    private static final String[] KONUM_SECENEKLERI = {
+            "Genel Müdürlük", "Muhasebe", "İnsan Kaynakları", "Hukuk",
+            "Satış ve Pazarlama", "Bilgi Teknolojileri", "Sunucu Odası",
+            "Toplantı Odası", "Yemekhane", "Mutfak", "Depo",
+            "Güvenlik", "Resepsiyon", "Arşiv", "Teknik Servis", "Diğer"
+    };
+
+    private static final String[] KATEGORI_SECENEKLERI = {
+            "Yapısal", "Elektrik", "Donanım (IT)", "Yazılım",
+            "Tesisat", "Mekanik / İklimlendirme", "Ağ / İnternet",
+            "Yangın Güvenlik", "Boya / Badana", "Temizlik / Hijyen", "Diğer"
+    };
 
     private boolean isEditMode = false;
     private int editId = -1;
@@ -36,11 +49,13 @@ public class ArizaEkleActivity extends AppCompatActivity {
         etBaslik = findViewById(R.id.etBaslik);
         etAciklama = findViewById(R.id.etAciklama);
         actvAciliyet = findViewById(R.id.actvAciliyet);
+        actvKonum = findViewById(R.id.actvKonum);
+        actvKategori = findViewById(R.id.actvKategori);
         btnKaydet = findViewById(R.id.btnKaydet);
 
-        ArrayAdapter<String> dropdownAdapter = new ArrayAdapter<>(
-                this, android.R.layout.simple_dropdown_item_1line, ACILIYET_LABELS);
-        actvAciliyet.setAdapter(dropdownAdapter);
+        actvAciliyet.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, ACILIYET_LABELS));
+        actvKonum.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, KONUM_SECENEKLERI));
+        actvKategori.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, KATEGORI_SECENEKLERI));
 
         isEditMode = getIntent().getBooleanExtra("isEdit", false);
 
@@ -61,8 +76,16 @@ public class ArizaEkleActivity extends AppCompatActivity {
                 }
             }
             actvAciliyet.setText(editLabel, false);
+
+            String editKonum = getIntent().getStringExtra("editKonum");
+            actvKonum.setText(editKonum != null ? editKonum : KONUM_SECENEKLERI[0], false);
+
+            String editKategori = getIntent().getStringExtra("editKategori");
+            actvKategori.setText(editKategori != null ? editKategori : KATEGORI_SECENEKLERI[0], false);
         } else {
             actvAciliyet.setText(ACILIYET_LABELS[0], false);
+            actvKonum.setText(KONUM_SECENEKLERI[0], false);
+            actvKategori.setText(KATEGORI_SECENEKLERI[0], false);
         }
 
         ImageButton btnClose = findViewById(R.id.btnClose);
@@ -72,6 +95,8 @@ public class ArizaEkleActivity extends AppCompatActivity {
             String baslik = etBaslik.getText().toString().trim();
             String aciklama = etAciklama.getText().toString().trim();
             String aciliyetLabel = actvAciliyet.getText().toString().trim();
+            String konum = actvKonum.getText().toString().trim();
+            String kategori = actvKategori.getText().toString().trim();
 
             if (baslik.isEmpty() || aciklama.isEmpty()) {
                 Toast.makeText(this, "Alanların boş bırakılamaz", Toast.LENGTH_SHORT).show();
@@ -87,11 +112,11 @@ public class ArizaEkleActivity extends AppCompatActivity {
             }
 
             if (isEditMode) {
-                ArizaRepository.updateAriza(editId, baslik, aciklama, aciliyetValue);
+                ArizaRepository.updateAriza(editId, baslik, aciklama, aciliyetValue, konum, kategori);
                 Toast.makeText(this, "Arıza güncellendi", Toast.LENGTH_SHORT).show();
             } else {
                 SessionManager session = new SessionManager(this);
-                ArizaRepository.addAriza(baslik, aciklama, session.getUsername(), aciliyetValue);
+                ArizaRepository.addAriza(baslik, aciklama, session.getUsername(), aciliyetValue, konum, kategori);
                 Toast.makeText(this, "Arıza kaydedildi", Toast.LENGTH_SHORT).show();
             }
 

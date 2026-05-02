@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.model.User;
 
-@Database(entities = {Ariza.class, User.class}, version = 5)
+@Database(entities = {Ariza.class, User.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
