@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +29,8 @@ import com.arizatakip.system.data.ArizaRepository;
 import com.arizatakip.system.data.UserRepository;
 import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.utils.SessionManager;
+import android.widget.ImageButton;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 
 import java.io.File;
@@ -44,7 +46,10 @@ import java.util.Locale;
 public class ArizaDetayActivity extends AppCompatActivity {
 
     TextView tvBaslik, tvAciklama, tvDurum, tvTarih, tvAtanan, tvOlusturan, tvAciliyet, tvKonum, tvKategori;
-    Button btnBack, btnDurum, btnTeknikerAta, btnSil, btnDuzenle;
+    TextView chevBaslik, chevAciklama, chevDurum, chevAciliyet, chevKonum, chevKategori, chevAtanan;
+    LinearLayout rowBaslik, rowAciklama, rowDurum, rowAciliyet, rowKonum, rowKategori, rowAtanan;
+    ImageButton btnBack;
+    MaterialButton btnSil;
     MaterialCardView cardGorseller;
     LinearLayout llImageSlots;
 
@@ -53,10 +58,29 @@ public class ArizaDetayActivity extends AppCompatActivity {
     int arizaId;
     String currentDurum;
     String currentAtanan;
+    String currentAciliyet;
+    String currentKonum;
+    String currentKategori;
 
     private static final int MAX_GORSELLER = 3;
     private final List<String> gorselPaths = new ArrayList<>();
     private File cameraFile;
+
+    private static final String[] DURUM_DISPLAY = {"Beklemede", "İşlemde", "Çözüldü"};
+    private static final String[] DURUM_VALUES  = {"OPEN", "IN_PROGRESS", "CLOSED"};
+    private static final String[] ACILIYET_LABELS = {"Normal", "Orta", "Çok Acil"};
+    private static final String[] ACILIYET_VALUES = {"NORMAL", "ORTA", "COK"};
+    private static final String[] KONUM_SECENEKLERI = {
+            "Genel Müdürlük", "Muhasebe", "İnsan Kaynakları", "Hukuk",
+            "Satış ve Pazarlama", "Bilgi Teknolojileri", "Sunucu Odası",
+            "Toplantı Odası", "Yemekhane", "Mutfak", "Depo",
+            "Güvenlik", "Resepsiyon", "Arşiv", "Teknik Servis", "Diğer"
+    };
+    private static final String[] KATEGORI_SECENEKLERI = {
+            "Elektrik", "Mekanik / İklimlendirme", "Tesisat",
+            "Yapısal", "Donanım (IT)", "Yazılım", "Ağ / İnternet",
+            "Asansör", "Yangın / Güvenlik Sistemi", "Diğer"
+    };
 
     private ActivityResultLauncher<Uri> cameraLauncher;
     private ActivityResultLauncher<String> galleryLauncher;
@@ -93,75 +117,42 @@ public class ArizaDetayActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         role = sessionManager.getRole();
 
-        tvBaslik = findViewById(R.id.tvBaslik);
-        tvAciklama = findViewById(R.id.tvAciklama);
-        tvDurum = findViewById(R.id.tvDurum);
-        tvTarih = findViewById(R.id.tvTarih);
-        tvAtanan = findViewById(R.id.tvAtanan);
+        tvBaslik    = findViewById(R.id.tvBaslik);
+        tvAciklama  = findViewById(R.id.tvAciklama);
+        tvDurum     = findViewById(R.id.tvDurum);
+        tvTarih     = findViewById(R.id.tvTarih);
+        tvAtanan    = findViewById(R.id.tvAtanan);
         tvOlusturan = findViewById(R.id.tvOlusturan);
-        tvAciliyet = findViewById(R.id.tvAciliyet);
-        tvKonum = findViewById(R.id.tvKonum);
-        tvKategori = findViewById(R.id.tvKategori);
+        tvAciliyet  = findViewById(R.id.tvAciliyet);
+        tvKonum     = findViewById(R.id.tvKonum);
+        tvKategori  = findViewById(R.id.tvKategori);
+
+        chevBaslik   = findViewById(R.id.chevBaslik);
+        chevAciklama = findViewById(R.id.chevAciklama);
+        chevDurum    = findViewById(R.id.chevDurum);
+        chevAciliyet = findViewById(R.id.chevAciliyet);
+        chevKonum    = findViewById(R.id.chevKonum);
+        chevKategori = findViewById(R.id.chevKategori);
+        chevAtanan   = findViewById(R.id.chevAtanan);
+
+        rowBaslik   = findViewById(R.id.rowBaslik);
+        rowAciklama = findViewById(R.id.rowAciklama);
+        rowDurum    = findViewById(R.id.rowDurum);
+        rowAciliyet = findViewById(R.id.rowAciliyet);
+        rowKonum    = findViewById(R.id.rowKonum);
+        rowKategori = findViewById(R.id.rowKategori);
+        rowAtanan   = findViewById(R.id.rowAtanan);
+
         cardGorseller = findViewById(R.id.cardGorseller);
-        llImageSlots = findViewById(R.id.llImageSlots);
+        llImageSlots  = findViewById(R.id.llImageSlots);
 
         btnBack = findViewById(R.id.btnBack);
-        btnDurum = findViewById(R.id.btnDurum);
-        btnTeknikerAta = findViewById(R.id.btnTeknikerAta);
-        btnSil = findViewById(R.id.btnSil);
-        btnDuzenle = findViewById(R.id.btnDuzenle);
+        btnSil  = findViewById(R.id.btnSil);
 
         arizaId = getIntent().getIntExtra("id", -1);
         populateFromIntent(getIntent());
 
         btnBack.setOnClickListener(v -> finish());
-
-        btnDuzenle.setOnClickListener(v -> {
-            Ariza ariza = ArizaRepository.getById(arizaId);
-            if (ariza == null) return;
-            Intent editIntent = new Intent(this, ArizaEkleActivity.class);
-            editIntent.putExtra("isEdit", true);
-            editIntent.putExtra("editId", arizaId);
-            editIntent.putExtra("editBaslik", ariza.getBaslik());
-            editIntent.putExtra("editAciklama", ariza.getAciklama());
-            editIntent.putExtra("editAciliyet", ariza.getAciliyetDerecesi());
-            editIntent.putExtra("editKonum", ariza.getKonum());
-            editIntent.putExtra("editKategori", ariza.getKategori());
-            startActivity(editIntent);
-        });
-
-        btnDurum.setOnClickListener(v -> {
-            String[] dbDurumlar = {"OPEN", "IN_PROGRESS", "CLOSED"};
-            String[] gosterilenDurumlar = {"Beklemede", "İşlemde", "Çözüldü"};
-            new AlertDialog.Builder(this)
-                    .setTitle("Durum Güncelle")
-                    .setItems(gosterilenDurumlar, (dialog, which) -> {
-                        ArizaRepository.updateDurum(arizaId, dbDurumlar[which]);
-                        currentDurum = dbDurumlar[which];
-                        tvDurum.setText("Durum: " + gosterilenDurumlar[which]);
-                    })
-                    .show();
-        });
-
-        btnTeknikerAta.setOnClickListener(v -> {
-            List<String> techList = UserRepository.getAllTechUsernames();
-            if (techList == null || techList.isEmpty()) {
-                Toast.makeText(this, "Sistemde teknik personel bulunamadı!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            String[] techs = techList.toArray(new String[0]);
-            new AlertDialog.Builder(this)
-                    .setTitle("Tekniker Seçin")
-                    .setItems(techs, (dialog, which) -> {
-                        ArizaRepository.updateAtananKisi(arizaId, techs[which]);
-                        currentAtanan = techs[which];
-                        tvAtanan.setText("Atanan: " + techs[which]);
-                        btnDuzenle.setVisibility(View.GONE);
-                        refreshImageSlots();
-                        Toast.makeText(this, "Görev " + techs[which] + " adlı personele atandı.", Toast.LENGTH_SHORT).show();
-                    })
-                    .show();
-        });
 
         btnSil.setOnClickListener(v -> new AlertDialog.Builder(this)
                 .setTitle("Dikkat!")
@@ -185,19 +176,23 @@ public class ArizaDetayActivity extends AppCompatActivity {
     }
 
     private void populateFromIntent(Intent intent) {
-        currentDurum = intent.getStringExtra("durum");
-        currentAtanan = intent.getStringExtra("atanan");
+        currentDurum    = intent.getStringExtra("durum");
+        currentAtanan   = intent.getStringExtra("atanan");
+        currentAciliyet = intent.getStringExtra("aciliyet");
+        currentKonum    = intent.getStringExtra("konum");
+        currentKategori = intent.getStringExtra("kategori");
 
         tvBaslik.setText(intent.getStringExtra("baslik"));
         tvAciklama.setText(intent.getStringExtra("aciklama"));
-        tvAtanan.setText("Atanan: " + currentAtanan);
-        tvOlusturan.setText("Açan: " + intent.getStringExtra("olusturan"));
+        tvAtanan.setText(currentAtanan);
+        tvOlusturan.setText(intent.getStringExtra("olusturan"));
 
         applyDurumText(currentDurum);
-        applyAciliyetBadge(intent.getStringExtra("aciliyet"));
+        applyAciliyetBadge(currentAciliyet);
         applyTarih(intent.getStringExtra("tarih"));
-        applyMetaLabels(intent.getStringExtra("konum"), intent.getStringExtra("kategori"));
-        applyButtonVisibility(currentAtanan);
+        applyMetaLabels(currentKonum, currentKategori);
+        setupEditAffordance();
+        applyButtonVisibility();
 
         String gorsellerStr = intent.getStringExtra("gorseller");
         gorselPaths.clear();
@@ -208,19 +203,23 @@ public class ArizaDetayActivity extends AppCompatActivity {
     }
 
     private void refreshUI(Ariza ariza) {
-        currentDurum = ariza.getDurum();
-        currentAtanan = ariza.getAtananKisi();
+        currentDurum    = ariza.getDurum();
+        currentAtanan   = ariza.getAtananKisi();
+        currentAciliyet = ariza.getAciliyetDerecesi();
+        currentKonum    = ariza.getKonum();
+        currentKategori = ariza.getKategori();
 
         tvBaslik.setText(ariza.getBaslik());
         tvAciklama.setText(ariza.getAciklama());
-        tvAtanan.setText("Atanan: " + currentAtanan);
-        tvOlusturan.setText("Açan: " + ariza.getOlusturanKisi());
+        tvAtanan.setText(currentAtanan);
+        tvOlusturan.setText(ariza.getOlusturanKisi());
 
         applyDurumText(currentDurum);
-        applyAciliyetBadge(ariza.getAciliyetDerecesi());
+        applyAciliyetBadge(currentAciliyet);
         applyTarih(ariza.getTarih());
-        applyMetaLabels(ariza.getKonum(), ariza.getKategori());
-        applyButtonVisibility(currentAtanan);
+        applyMetaLabels(currentKonum, currentKategori);
+        setupEditAffordance();
+        applyButtonVisibility();
 
         gorselPaths.clear();
         if (ariza.getGorseller() != null && !ariza.getGorseller().isEmpty()) {
@@ -228,6 +227,166 @@ public class ArizaDetayActivity extends AppCompatActivity {
         }
         refreshImageSlots();
     }
+
+    // ── Inline edit affordance ───────────────────────────────────────────────
+
+    private void setupEditAffordance() {
+        boolean isAdmin = "admin".equals(role);
+        boolean isTech  = "tech".equals(role);
+        boolean clientCanEdit = "client".equals(role) && "Atanmadı".equals(currentAtanan);
+
+        // Başlık
+        if (isAdmin || clientCanEdit) {
+            chevBaslik.setVisibility(View.VISIBLE);
+            rowBaslik.setOnClickListener(v -> showTextEditDialog("Başlık düzenle",
+                    tvBaslik.getText().toString(), text -> {
+                        ArizaRepository.updateAriza(arizaId, text,
+                                tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        tvBaslik.setText(text);
+                    }));
+        } else {
+            chevBaslik.setVisibility(View.GONE);
+            rowBaslik.setClickable(false);
+        }
+
+        // Açıklama
+        if (isAdmin || clientCanEdit) {
+            chevAciklama.setVisibility(View.VISIBLE);
+            rowAciklama.setOnClickListener(v -> showTextEditDialog("Açıklama düzenle",
+                    tvAciklama.getText().toString(), text -> {
+                        ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
+                                text, currentAciliyet, currentKonum, currentKategori);
+                        tvAciklama.setText(text);
+                    }));
+        } else {
+            chevAciklama.setVisibility(View.GONE);
+            rowAciklama.setClickable(false);
+        }
+
+        // Durum
+        if (isAdmin || isTech) {
+            chevDurum.setVisibility(View.VISIBLE);
+            rowDurum.setOnClickListener(v -> showListDialog("Durum güncelle", DURUM_DISPLAY,
+                    indexOf(DURUM_VALUES, currentDurum), which -> {
+                        ArizaRepository.updateDurum(arizaId, DURUM_VALUES[which]);
+                        currentDurum = DURUM_VALUES[which];
+                        applyDurumText(currentDurum);
+                    }));
+        } else {
+            chevDurum.setVisibility(View.GONE);
+            rowDurum.setClickable(false);
+        }
+
+        // Aciliyet
+        if (isAdmin || clientCanEdit) {
+            chevAciliyet.setVisibility(View.VISIBLE);
+            rowAciliyet.setOnClickListener(v -> showListDialog("Aciliyet seç", ACILIYET_LABELS,
+                    indexOf(ACILIYET_VALUES, currentAciliyet), which -> {
+                        currentAciliyet = ACILIYET_VALUES[which];
+                        ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
+                                tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        applyAciliyetBadge(currentAciliyet);
+                    }));
+        } else {
+            chevAciliyet.setVisibility(View.GONE);
+            rowAciliyet.setClickable(false);
+        }
+
+        // Konum
+        if (isAdmin || clientCanEdit) {
+            chevKonum.setVisibility(View.VISIBLE);
+            rowKonum.setOnClickListener(v -> showListDialog("Konum seç", KONUM_SECENEKLERI,
+                    indexOf(KONUM_SECENEKLERI, currentKonum), which -> {
+                        currentKonum = KONUM_SECENEKLERI[which];
+                        ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
+                                tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        tvKonum.setText(currentKonum);
+                    }));
+        } else {
+            chevKonum.setVisibility(View.GONE);
+            rowKonum.setClickable(false);
+        }
+
+        // Kategori
+        if (isAdmin || clientCanEdit) {
+            chevKategori.setVisibility(View.VISIBLE);
+            rowKategori.setOnClickListener(v -> showListDialog("Kategori seç", KATEGORI_SECENEKLERI,
+                    indexOf(KATEGORI_SECENEKLERI, currentKategori), which -> {
+                        currentKategori = KATEGORI_SECENEKLERI[which];
+                        ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
+                                tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        tvKategori.setText(currentKategori);
+                    }));
+        } else {
+            chevKategori.setVisibility(View.GONE);
+            rowKategori.setClickable(false);
+        }
+
+        // Atanan (admin only)
+        if (isAdmin) {
+            chevAtanan.setVisibility(View.VISIBLE);
+            rowAtanan.setOnClickListener(v -> {
+                List<String> techList = UserRepository.getAllTechUsernames();
+                if (techList == null || techList.isEmpty()) {
+                    Toast.makeText(this, "Sistemde teknik personel bulunamadı!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String[] techs = techList.toArray(new String[0]);
+                showListDialog("Tekniker Seç", techs, indexOf(techs, currentAtanan), which -> {
+                    ArizaRepository.updateAtananKisi(arizaId, techs[which]);
+                    currentAtanan = techs[which];
+                    tvAtanan.setText(currentAtanan);
+                    setupEditAffordance();
+                    refreshImageSlots();
+                    Toast.makeText(this, "Görev " + techs[which] + " adlı personele atandı.", Toast.LENGTH_SHORT).show();
+                });
+            });
+        } else {
+            chevAtanan.setVisibility(View.GONE);
+            rowAtanan.setClickable(false);
+        }
+    }
+
+    // ── Dialog helpers ───────────────────────────────────────────────────────
+
+    private void showTextEditDialog(String title, String currentValue, OnTextConfirm callback) {
+        EditText input = new EditText(this);
+        input.setText(currentValue);
+        if (currentValue != null) input.setSelection(currentValue.length());
+        input.setSingleLine(false);
+        int pad = dp(16);
+        input.setPadding(pad, pad / 2, pad, pad / 2);
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setView(input)
+                .setPositiveButton("Kaydet", (d, w) -> {
+                    String text = input.getText().toString().trim();
+                    if (!text.isEmpty()) callback.onConfirm(text);
+                })
+                .setNegativeButton("İptal", null)
+                .show();
+    }
+
+    private void showListDialog(String title, String[] items, int checkedItem, OnItemSelected callback) {
+        final int[] selected = {checkedItem};
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setSingleChoiceItems(items, checkedItem, (d, w) -> selected[0] = w)
+                .setPositiveButton("Tamam", (d, w) -> { if (selected[0] >= 0) callback.onSelect(selected[0]); })
+                .setNegativeButton("İptal", null)
+                .show();
+    }
+
+    private int indexOf(String[] arr, String value) {
+        if (value == null) return -1;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(value)) return i;
+        }
+        return -1;
+    }
+
+    interface OnTextConfirm { void onConfirm(String text); }
+    interface OnItemSelected { void onSelect(int which); }
 
     // ── Image slots ──────────────────────────────────────────────────────────
 
@@ -247,14 +406,12 @@ public class ArizaDetayActivity extends AppCompatActivity {
         cardGorseller.setVisibility(shouldShow ? View.VISIBLE : View.GONE);
     }
 
-    /** Görsel ekleyebilir: admin her zaman, client sadece atanmamış arızada */
     private boolean canAddImages() {
         if ("admin".equals(role)) return true;
         if ("client".equals(role)) return "Atanmadı".equals(currentAtanan);
         return false;
     }
 
-    /** Görsel kaldırabilir: admin ve client her zaman */
     private boolean canRemoveImages() {
         return "admin".equals(role) || "client".equals(role);
     }
@@ -409,26 +566,26 @@ public class ArizaDetayActivity extends AppCompatActivity {
 
     private void applyDurumText(String durum) {
         String label = durum;
-        if ("OPEN".equals(durum)) label = "Beklemede";
+        if ("OPEN".equals(durum))        label = "Beklemede";
         else if ("IN_PROGRESS".equals(durum)) label = "İşlemde";
         else if ("CLOSED".equals(durum)) label = "Çözüldü";
-        tvDurum.setText("Durum: " + label);
+        tvDurum.setText(label);
     }
 
     private void applyAciliyetBadge(String aciliyet) {
         String label;
         int bgColor, textColor;
         if ("COK".equals(aciliyet)) {
-            label = "Çok Acil";
-            bgColor = Color.parseColor("#EBF2FC");
+            label     = "Çok Acil";
+            bgColor   = Color.parseColor("#EBF2FC");
             textColor = Color.parseColor("#0F3D7A");
         } else if ("ORTA".equals(aciliyet)) {
-            label = "Orta";
-            bgColor = Color.parseColor("#E3EAF6");
+            label     = "Orta";
+            bgColor   = Color.parseColor("#E3EAF6");
             textColor = Color.parseColor("#2E6DC4");
         } else {
-            label = "Normal";
-            bgColor = Color.parseColor("#F0F3F7");
+            label     = "Normal";
+            bgColor   = Color.parseColor("#F0F3F7");
             textColor = Color.parseColor("#4A5568");
         }
         tvAciliyet.setText(label);
@@ -441,38 +598,22 @@ public class ArizaDetayActivity extends AppCompatActivity {
     }
 
     private void applyMetaLabels(String konum, String kategori) {
-        tvKonum.setText("📍 " + (konum != null && !konum.isEmpty() ? konum : "—"));
-        tvKategori.setText("🏷 " + (kategori != null && !kategori.isEmpty() ? kategori : "—"));
+        tvKonum.setText(konum != null && !konum.isEmpty() ? konum : "—");
+        tvKategori.setText(kategori != null && !kategori.isEmpty() ? kategori : "—");
     }
 
     private void applyTarih(String tarih) {
         try {
             long ms = Long.parseLong(tarih);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", new Locale("tr", "TR"));
-            tvTarih.setText("Tarih: " + sdf.format(new Date(ms)));
+            tvTarih.setText(sdf.format(new Date(ms)));
         } catch (Exception e) {
-            tvTarih.setText("Tarih: " + tarih);
+            tvTarih.setText(tarih);
         }
     }
 
-    private void applyButtonVisibility(String atananKisi) {
-        if ("client".equals(role)) {
-            btnDurum.setVisibility(View.GONE);
-            btnTeknikerAta.setVisibility(View.GONE);
-            btnSil.setVisibility(View.GONE);
-            boolean atanmamis = "Atanmadı".equals(atananKisi);
-            btnDuzenle.setVisibility(atanmamis ? View.VISIBLE : View.GONE);
-        } else if ("tech".equals(role)) {
-            btnDurum.setVisibility(View.VISIBLE);
-            btnTeknikerAta.setVisibility(View.GONE);
-            btnSil.setVisibility(View.GONE);
-            btnDuzenle.setVisibility(View.GONE);
-        } else if ("admin".equals(role)) {
-            btnDurum.setVisibility(View.VISIBLE);
-            btnTeknikerAta.setVisibility(View.VISIBLE);
-            btnSil.setVisibility(View.VISIBLE);
-            btnDuzenle.setVisibility(View.GONE);
-        }
+    private void applyButtonVisibility() {
+        btnSil.setVisibility("admin".equals(role) ? View.VISIBLE : View.GONE);
     }
 
     private Bitmap decodeThumbnail(String path, int reqW, int reqH) {
