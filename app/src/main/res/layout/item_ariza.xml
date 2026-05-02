@@ -4,21 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="0dp"
+    android:layout_marginVertical="5dp"
     app:cardBackgroundColor="@color/cardBackground"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp"
-    app:strokeWidth="0dp">
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/borderColor">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <!-- Status stripe -->
         <View
             android:id="@+id/viewStatusIndicator"
-            android:layout_width="6dp"
+            android:layout_width="5dp"
             android:layout_height="match_parent"
             android:background="@color/statusOpen" />
 
@@ -40,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -58,13 +60,14 @@
 
             <TextView
                 android:id="@+id/tvAciklama"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:textColor="#606060"
-                android:textSize="14sp" />
+                android:textColor="@color/textColorSecondary"
+                android:textSize="13sp"
+                android:lineSpacingExtra="2dp" />
 
         </LinearLayout>
     </LinearLayout>

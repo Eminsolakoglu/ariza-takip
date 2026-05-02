@@ -3,7 +3,6 @@ package com.arizatakip.system;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
 
         TextView tvUser = findViewById(R.id.tvUser);
-        ImageButton btnLogout = findViewById(R.id.btnLogout);
+        MaterialButton btnLogout = findViewById(R.id.btnLogout);
         btnEkle = findViewById(R.id.btnEkle);
         tvListeBaslik = findViewById(R.id.tvListeBaslik);
         tvFiltreyiTemizle = findViewById(R.id.tvFiltreyiTemizle);
@@ -91,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("olusturan", ariza.getOlusturanKisi());
             intent.putExtra("atanan", ariza.getAtananKisi());
             intent.putExtra("aciliyet", ariza.getAciliyetDerecesi());
+            intent.putExtra("konum", ariza.getKonum());
+            intent.putExtra("kategori", ariza.getKategori());
+            intent.putExtra("gorseller", ariza.getGorseller());
             startActivity(intent);
         });
 
