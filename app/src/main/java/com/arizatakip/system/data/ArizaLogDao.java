@@ -18,4 +18,7 @@ public interface ArizaLogDao {
 
     @Query("DELETE FROM ariza_logs WHERE arizaId = :arizaId")
     void deleteByArizaId(int arizaId);
+
+    @Query("SELECT * FROM ariza_logs WHERE tarih >= :since ORDER BY tarih ASC")
+    List<ArizaLog> getLogsSince(long since);
 }

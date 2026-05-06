@@ -61,12 +61,19 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
+        MaterialButton btnDashboard = findViewById(R.id.btnDashboard);
+
         String role = sessionManager.getRole();
         if (role.equals("client")) {
             btnEkle.setVisibility(View.VISIBLE);
         } else {
             btnEkle.setVisibility(View.GONE);
         }
+
+        if (role.equals("admin") || role.equals("tech")) {
+            btnDashboard.setVisibility(View.VISIBLE);
+        }
+        btnDashboard.setOnClickListener(v -> startActivity(new Intent(this, DashboardActivity.class)));
 
         btnEkle.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, ArizaEkleActivity.class));

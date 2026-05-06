@@ -26,4 +26,8 @@ public class ArizaLogRepository {
     public static void deleteByArizaId(int arizaId) {
         db.arizaLogDao().deleteByArizaId(arizaId);
     }
+
+    public static List<ArizaLog> getLogsSince(long since) {
+        return db.arizaLogDao().getLogsSince(since);
+    }
 }
