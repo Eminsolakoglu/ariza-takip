@@ -16,8 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -31,6 +29,7 @@ import com.arizatakip.system.data.UserRepository;
 import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.model.ArizaLog;
 import com.arizatakip.system.utils.SessionManager;
+import com.arizatakip.system.utils.ToastHelper;
 import android.widget.ImageButton;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
@@ -112,7 +111,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
 
         cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
             if (granted) launchCamera();
-            else Toast.makeText(this, "Kamera izni gereklidir", Toast.LENGTH_SHORT).show();
+            else ToastHelper.hata(this, "Kamera izni gereklidir");
         });
 
         setContentView(R.layout.activity_ariza_detay);
@@ -164,7 +163,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
                 .setPositiveButton("Evet, Sil", (dialog, which) -> {
                     ArizaRepository.deleteById(arizaId);
                     ArizaLogRepository.deleteByArizaId(arizaId);
-                    Toast.makeText(this, "Arıza başarıyla silindi.", Toast.LENGTH_SHORT).show();
+                    ToastHelper.silindi(this, "Arıza başarıyla silindi.");
                     finish();
                 })
                 .setNegativeButton("İptal", null)
@@ -443,7 +442,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
             rowAtanan.setOnClickListener(v -> {
                 List<String> techList = UserRepository.getAllTechUsernames();
                 if (techList == null || techList.isEmpty()) {
-                    Toast.makeText(this, "Sistemde teknik personel bulunamadı!", Toast.LENGTH_SHORT).show();
+                    ToastHelper.hata(this, "Sistemde teknik personel bulunamadı!");
                     return;
                 }
                 String[] techs = techList.toArray(new String[0]);
@@ -456,7 +455,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
                     setupEditAffordance();
                     refreshImageSlots();
                     loadLogs();
-                    Toast.makeText(this, "Görev " + techs[which] + " adlı personele atandı.", Toast.LENGTH_SHORT).show();
+                    ToastHelper.guncellendi(this, "Görev " + techs[which] + " adlı personele atandı.");
                 });
             });
         } else {
@@ -672,7 +671,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
             Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", cameraFile);
             cameraLauncher.launch(uri);
         } catch (Exception e) {
-            Toast.makeText(this, "Kamera başlatılamadı", Toast.LENGTH_SHORT).show();
+            ToastHelper.hata(this, "Kamera başlatılamadı");
         }
     }
 
@@ -689,7 +688,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
             }
             return dest.getAbsolutePath();
         } catch (Exception e) {
-            Toast.makeText(this, "Görsel kaydedilemedi", Toast.LENGTH_SHORT).show();
+            ToastHelper.hata(this, "Görsel kaydedilemedi");
             return null;
         }
     }

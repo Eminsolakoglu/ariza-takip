@@ -12,7 +12,7 @@ import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.model.ArizaLog;
 import com.arizatakip.system.model.User;
 
-@Database(entities = {Ariza.class, User.class, ArizaLog.class}, version = 8)
+@Database(entities = {Ariza.class, User.class, ArizaLog.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
@@ -21,6 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract ArizaLogDao arizaLogDao();
 
+    // 7→8: ariza_logs tablosu eklendi
     static final Migration MIGRATION_7_8 = new Migration(7, 8) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {

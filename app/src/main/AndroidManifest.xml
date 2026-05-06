@@ -33,6 +33,7 @@
         <activity android:name=".ArizaListeActivity" />
         <activity android:name=".ArizaDetayActivity" />
         <activity android:name=".GorselDetayActivity" />
+        <activity android:name=".DashboardActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

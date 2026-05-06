@@ -40,4 +40,7 @@ public interface ArizaDao {
 
     @Query("UPDATE arizalar SET gorseller = :gorseller WHERE id = :id")
     void updateGorseller(int id, String gorseller);
+
+    @Query("SELECT COUNT(*) FROM arizalar")
+    int getCount();
 }

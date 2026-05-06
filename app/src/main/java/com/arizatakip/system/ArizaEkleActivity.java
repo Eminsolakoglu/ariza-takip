@@ -17,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +28,7 @@ import com.arizatakip.system.data.ArizaLogRepository;
 import com.arizatakip.system.data.ArizaRepository;
 import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.utils.SessionManager;
+import com.arizatakip.system.utils.ToastHelper;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -98,7 +97,7 @@ public class ArizaEkleActivity extends AppCompatActivity {
 
         cameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
             if (granted) launchCamera();
-            else Toast.makeText(this, "Kamera izni gereklidir", Toast.LENGTH_SHORT).show();
+            else ToastHelper.hata(this, "Kamera izni gereklidir");
         });
 
         setContentView(R.layout.activity_ariza_ekle);
@@ -159,7 +158,7 @@ public class ArizaEkleActivity extends AppCompatActivity {
             String kategori = actvKategori.getText().toString().trim();
 
             if (baslik.isEmpty() || aciklama.isEmpty()) {
-                Toast.makeText(this, "Alanların boş bırakılamaz", Toast.LENGTH_SHORT).show();
+                ToastHelper.hata(this, "Alanların boş bırakılamaz");
                 return;
             }
 
@@ -173,13 +172,13 @@ public class ArizaEkleActivity extends AppCompatActivity {
             if (isEditMode) {
                 ArizaRepository.updateAriza(editId, baslik, aciklama, aciliyetValue, konum, kategori);
                 ArizaRepository.updateGorseller(editId, gorselStr);
-                Toast.makeText(this, "Arıza güncellendi", Toast.LENGTH_SHORT).show();
+                ToastHelper.guncellendi(this, "Arıza güncellendi");
             } else {
                 SessionManager session = new SessionManager(this);
                 long insertedId = ArizaRepository.addAriza(baslik, aciklama, session.getUsername(), aciliyetValue, konum, kategori, gorselStr);
                 ArizaLogRepository.addLog((int) insertedId, session.getUsername(),
                         session.getUsername() + " arızayı açtı.");
-                Toast.makeText(this, "Arıza kaydedildi", Toast.LENGTH_SHORT).show();
+                ToastHelper.olusturuldu(this, "Arıza kaydedildi");
             }
             finish();
         });
@@ -310,7 +309,7 @@ public class ArizaEkleActivity extends AppCompatActivity {
             Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".fileprovider", cameraFile);
             cameraLauncher.launch(uri);
         } catch (Exception e) {
-            Toast.makeText(this, "Kamera başlatılamadı", Toast.LENGTH_SHORT).show();
+            ToastHelper.hata(this, "Kamera başlatılamadı");
         }
     }
 
@@ -327,7 +326,7 @@ public class ArizaEkleActivity extends AppCompatActivity {
             }
             return dest.getAbsolutePath();
         } catch (Exception e) {
-            Toast.makeText(this, "Görsel kaydedilemedi", Toast.LENGTH_SHORT).show();
+            ToastHelper.hata(this, "Görsel kaydedilemedi");
             return null;
         }
     }

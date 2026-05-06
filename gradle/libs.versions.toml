@@ -15,6 +15,7 @@ room = "2.5.2"
 lifecycle = "2.6.1"
 firebase-bom = "32.0.0"
 gson = "2.10.1"
+mpandroidchart = "v3.1.0"
 
 [libraries]
 # Core
@@ -46,6 +47,7 @@ firebase-database = { group = "com.google.firebase", name = "firebase-database" 
 
 # Gson
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
 
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
