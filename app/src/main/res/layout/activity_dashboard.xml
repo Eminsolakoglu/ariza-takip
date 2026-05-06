@@ -305,10 +305,10 @@
                         android:paddingVertical="24dp"
                         android:visibility="gone" />
 
-                    <com.github.mikephil.charting.charts.HorizontalBarChart
-                        android:id="@+id/barChart"
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChartTech"
                         android:layout_width="match_parent"
-                        android:layout_height="200dp" />
+                        android:layout_height="240dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

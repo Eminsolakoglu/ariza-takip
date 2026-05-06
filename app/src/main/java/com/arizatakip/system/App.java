@@ -14,5 +14,6 @@ public class App extends Application {
         ArizaRepository.init(this);
         UserRepository.init(this);
         ArizaLogRepository.init(this);
+        ArizaRepository.prepopulateDemo();
     }
 }
