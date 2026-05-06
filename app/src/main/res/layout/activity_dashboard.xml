@@ -160,7 +160,7 @@
 
             </LinearLayout>
 
-            <!-- Ortalama bekleme süresi kartı -->
+            <!-- Ortalama bekleme süresi -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Pasta Grafiği: Kategoriye Göre Açık Arızalar -->
+            <!-- Pasta Grafiği: Açık arızaların kategori dağılımı -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -258,7 +258,7 @@
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Çubuk Grafiği: Personel Başına Aktif İş (admin only) -->
+            <!-- Çubuk Grafiği: Personel İş Yükü (admin only) -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardBar"
                 android:layout_width="match_parent"
@@ -305,10 +305,54 @@
                         android:paddingVertical="24dp"
                         android:visibility="gone" />
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChartTech"
+                    <com.github.mikephil.charting.charts.HorizontalBarChart
+                        android:id="@+id/barChart"
                         android:layout_width="match_parent"
-                        android:layout_height="240dp" />
+                        android:layout_height="180dp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Çizgi Grafik: 7 günlük trend (admin only) -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/borderColor"
+                app:cardBackgroundColor="@color/cardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Son 7 Günlük Arıza Trendi"
+                        android:textColor="@color/textColorPrimary"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Açılan (mavi) — Çözülen (yeşil)"
+                        android:textColor="@color/textColorMuted"
+                        android:textSize="12sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:id="@+id/lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
