@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.arizatakip.system.data.ArizaLogRepository;
 import com.arizatakip.system.data.ArizaRepository;
 import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.utils.SessionManager;
@@ -175,7 +176,9 @@ public class ArizaEkleActivity extends AppCompatActivity {
                 Toast.makeText(this, "Arıza güncellendi", Toast.LENGTH_SHORT).show();
             } else {
                 SessionManager session = new SessionManager(this);
-                ArizaRepository.addAriza(baslik, aciklama, session.getUsername(), aciliyetValue, konum, kategori, gorselStr);
+                long insertedId = ArizaRepository.addAriza(baslik, aciklama, session.getUsername(), aciliyetValue, konum, kategori, gorselStr);
+                ArizaLogRepository.addLog((int) insertedId, session.getUsername(),
+                        session.getUsername() + " arızayı açtı.");
                 Toast.makeText(this, "Arıza kaydedildi", Toast.LENGTH_SHORT).show();
             }
             finish();
