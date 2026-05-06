@@ -12,7 +12,7 @@ import java.util.List;
 public interface ArizaDao {
 
     @Insert
-    void insert(Ariza ariza);
+    long insert(Ariza ariza);
 
     @Query("SELECT * FROM arizalar ORDER BY id DESC")
     List<Ariza> getAll();

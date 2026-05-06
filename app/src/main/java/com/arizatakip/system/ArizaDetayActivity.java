@@ -25,9 +25,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.arizatakip.system.data.ArizaLogRepository;
 import com.arizatakip.system.data.ArizaRepository;
 import com.arizatakip.system.data.UserRepository;
 import com.arizatakip.system.model.Ariza;
+import com.arizatakip.system.model.ArizaLog;
 import com.arizatakip.system.utils.SessionManager;
 import android.widget.ImageButton;
 import com.google.android.material.button.MaterialButton;
@@ -48,6 +50,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
     TextView tvBaslik, tvAciklama, tvDurum, tvTarih, tvAtanan, tvOlusturan, tvAciliyet, tvKonum, tvKategori;
     TextView chevBaslik, chevAciklama, chevDurum, chevAciliyet, chevKonum, chevKategori, chevAtanan;
     LinearLayout rowBaslik, rowAciklama, rowDurum, rowAciliyet, rowKonum, rowKategori, rowAtanan;
+    LinearLayout llLogList;
     ImageButton btnBack;
     MaterialButton btnSil;
     MaterialCardView cardGorseller;
@@ -145,6 +148,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
 
         cardGorseller = findViewById(R.id.cardGorseller);
         llImageSlots  = findViewById(R.id.llImageSlots);
+        llLogList     = findViewById(R.id.llLogList);
 
         btnBack = findViewById(R.id.btnBack);
         btnSil  = findViewById(R.id.btnSil);
@@ -159,6 +163,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
                 .setMessage("Bu arıza kaydını kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.")
                 .setPositiveButton("Evet, Sil", (dialog, which) -> {
                     ArizaRepository.deleteById(arizaId);
+                    ArizaLogRepository.deleteByArizaId(arizaId);
                     Toast.makeText(this, "Arıza başarıyla silindi.", Toast.LENGTH_SHORT).show();
                     finish();
                 })
@@ -173,6 +178,7 @@ public class ArizaDetayActivity extends AppCompatActivity {
             Ariza ariza = ArizaRepository.getById(arizaId);
             if (ariza != null) refreshUI(ariza);
         }
+        loadLogs();
     }
 
     private void populateFromIntent(Intent intent) {
@@ -228,6 +234,95 @@ public class ArizaDetayActivity extends AppCompatActivity {
         refreshImageSlots();
     }
 
+    // ── Log history ──────────────────────────────────────────────────────────
+
+    private void loadLogs() {
+        if (arizaId == -1 || llLogList == null) return;
+        List<ArizaLog> logs = ArizaLogRepository.getByArizaId(arizaId);
+        llLogList.removeAllViews();
+        if (logs == null || logs.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("Henüz kayıt bulunmuyor.");
+            empty.setTextColor(Color.parseColor("#8896A8"));
+            empty.setTextSize(13f);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.bottomMargin = dp(8);
+            empty.setLayoutParams(lp);
+            llLogList.addView(empty);
+        } else {
+            for (int i = 0; i < logs.size(); i++) {
+                llLogList.addView(buildLogItem(logs.get(i), i == logs.size() - 1));
+            }
+        }
+    }
+
+    private View buildLogItem(ArizaLog log, boolean isLast) {
+        LinearLayout root = new LinearLayout(this);
+        root.setOrientation(LinearLayout.HORIZONTAL);
+        root.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        // Timeline column
+        LinearLayout timelineCol = new LinearLayout(this);
+        timelineCol.setOrientation(LinearLayout.VERTICAL);
+        timelineCol.setGravity(Gravity.CENTER_HORIZONTAL);
+        LinearLayout.LayoutParams colLp = new LinearLayout.LayoutParams(dp(20), LinearLayout.LayoutParams.MATCH_PARENT);
+        timelineCol.setLayoutParams(colLp);
+
+        View topLine = new View(this);
+        topLine.setLayoutParams(new LinearLayout.LayoutParams(dp(2), dp(10)));
+        topLine.setBackgroundColor(Color.parseColor("#DCE2EA"));
+        timelineCol.addView(topLine);
+
+        View dot = new View(this);
+        GradientDrawable dotBg = new GradientDrawable();
+        dotBg.setShape(GradientDrawable.OVAL);
+        dotBg.setColor(Color.parseColor("#1A56A0"));
+        dot.setBackground(dotBg);
+        dot.setLayoutParams(new LinearLayout.LayoutParams(dp(10), dp(10)));
+        timelineCol.addView(dot);
+
+        if (!isLast) {
+            View bottomLine = new View(this);
+            bottomLine.setLayoutParams(new LinearLayout.LayoutParams(dp(2), 0, 1f));
+            bottomLine.setBackgroundColor(Color.parseColor("#DCE2EA"));
+            timelineCol.addView(bottomLine);
+        }
+        root.addView(timelineCol);
+
+        // Content column
+        LinearLayout content = new LinearLayout(this);
+        content.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams contentLp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        contentLp.setMarginStart(dp(12));
+        contentLp.bottomMargin = isLast ? dp(4) : dp(16);
+        content.setLayoutParams(contentLp);
+
+        TextView tvTime = new TextView(this);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", new Locale("tr", "TR"));
+        tvTime.setText(sdf.format(new Date(log.getTarih())));
+        tvTime.setTextSize(11f);
+        tvTime.setTextColor(Color.parseColor("#8896A8"));
+        content.addView(tvTime);
+
+        TextView tvDetay = new TextView(this);
+        tvDetay.setText(log.getDetay());
+        tvDetay.setTextSize(13f);
+        tvDetay.setTextColor(Color.parseColor("#1A2332"));
+        LinearLayout.LayoutParams detayLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        detayLp.topMargin = dp(2);
+        tvDetay.setLayoutParams(detayLp);
+        content.addView(tvDetay);
+
+        root.addView(content);
+        return root;
+    }
+
     // ── Inline edit affordance ───────────────────────────────────────────────
 
     private void setupEditAffordance() {
@@ -242,7 +337,10 @@ public class ArizaDetayActivity extends AppCompatActivity {
                     tvBaslik.getText().toString(), text -> {
                         ArizaRepository.updateAriza(arizaId, text,
                                 tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                sessionManager.getUsername() + " başlığı güncelledi.");
                         tvBaslik.setText(text);
+                        loadLogs();
                     }));
         } else {
             chevBaslik.setVisibility(View.GONE);
@@ -256,7 +354,10 @@ public class ArizaDetayActivity extends AppCompatActivity {
                     tvAciklama.getText().toString(), text -> {
                         ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
                                 text, currentAciliyet, currentKonum, currentKategori);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                sessionManager.getUsername() + " açıklamayı güncelledi.");
                         tvAciklama.setText(text);
+                        loadLogs();
                     }));
         } else {
             chevAciklama.setVisibility(View.GONE);
@@ -268,9 +369,13 @@ public class ArizaDetayActivity extends AppCompatActivity {
             chevDurum.setVisibility(View.VISIBLE);
             rowDurum.setOnClickListener(v -> showListDialog("Durum güncelle", DURUM_DISPLAY,
                     indexOf(DURUM_VALUES, currentDurum), which -> {
+                        String eskiLabel = durumLabel(currentDurum);
                         ArizaRepository.updateDurum(arizaId, DURUM_VALUES[which]);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                "Durum \"" + eskiLabel + "\" → \"" + DURUM_DISPLAY[which] + "\" olarak değiştirildi.");
                         currentDurum = DURUM_VALUES[which];
                         applyDurumText(currentDurum);
+                        loadLogs();
                     }));
         } else {
             chevDurum.setVisibility(View.GONE);
@@ -282,10 +387,14 @@ public class ArizaDetayActivity extends AppCompatActivity {
             chevAciliyet.setVisibility(View.VISIBLE);
             rowAciliyet.setOnClickListener(v -> showListDialog("Aciliyet seç", ACILIYET_LABELS,
                     indexOf(ACILIYET_VALUES, currentAciliyet), which -> {
+                        String eskiLabel = aciliyetLabel(currentAciliyet);
                         currentAciliyet = ACILIYET_VALUES[which];
                         ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
                                 tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                "Aciliyet \"" + eskiLabel + "\" → \"" + ACILIYET_LABELS[which] + "\" olarak değiştirildi.");
                         applyAciliyetBadge(currentAciliyet);
+                        loadLogs();
                     }));
         } else {
             chevAciliyet.setVisibility(View.GONE);
@@ -300,7 +409,10 @@ public class ArizaDetayActivity extends AppCompatActivity {
                         currentKonum = KONUM_SECENEKLERI[which];
                         ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
                                 tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                "Konum \"" + currentKonum + "\" olarak güncellendi.");
                         tvKonum.setText(currentKonum);
+                        loadLogs();
                     }));
         } else {
             chevKonum.setVisibility(View.GONE);
@@ -315,7 +427,10 @@ public class ArizaDetayActivity extends AppCompatActivity {
                         currentKategori = KATEGORI_SECENEKLERI[which];
                         ArizaRepository.updateAriza(arizaId, tvBaslik.getText().toString(),
                                 tvAciklama.getText().toString(), currentAciliyet, currentKonum, currentKategori);
+                        ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                                "Kategori \"" + currentKategori + "\" olarak güncellendi.");
                         tvKategori.setText(currentKategori);
+                        loadLogs();
                     }));
         } else {
             chevKategori.setVisibility(View.GONE);
@@ -334,10 +449,13 @@ public class ArizaDetayActivity extends AppCompatActivity {
                 String[] techs = techList.toArray(new String[0]);
                 showListDialog("Tekniker Seç", techs, indexOf(techs, currentAtanan), which -> {
                     ArizaRepository.updateAtananKisi(arizaId, techs[which]);
+                    ArizaLogRepository.addLog(arizaId, sessionManager.getUsername(),
+                            "Arıza " + techs[which] + " kişisine atandı.");
                     currentAtanan = techs[which];
                     tvAtanan.setText(currentAtanan);
                     setupEditAffordance();
                     refreshImageSlots();
+                    loadLogs();
                     Toast.makeText(this, "Görev " + techs[which] + " adlı personele atandı.", Toast.LENGTH_SHORT).show();
                 });
             });
@@ -383,6 +501,20 @@ public class ArizaDetayActivity extends AppCompatActivity {
             if (arr[i].equals(value)) return i;
         }
         return -1;
+    }
+
+    private String durumLabel(String value) {
+        for (int i = 0; i < DURUM_VALUES.length; i++) {
+            if (DURUM_VALUES[i].equals(value)) return DURUM_DISPLAY[i];
+        }
+        return value;
+    }
+
+    private String aciliyetLabel(String value) {
+        for (int i = 0; i < ACILIYET_VALUES.length; i++) {
+            if (ACILIYET_VALUES[i].equals(value)) return ACILIYET_LABELS[i];
+        }
+        return value;
     }
 
     interface OnTextConfirm { void onConfirm(String text); }
