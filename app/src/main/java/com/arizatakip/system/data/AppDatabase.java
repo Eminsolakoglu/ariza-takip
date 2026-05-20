@@ -12,7 +12,7 @@ import com.arizatakip.system.model.Ariza;
 import com.arizatakip.system.model.ArizaLog;
 import com.arizatakip.system.model.User;
 
-@Database(entities = {Ariza.class, User.class, ArizaLog.class}, version = 9)
+@Database(entities = {Ariza.class, User.class, ArizaLog.class}, version = 11)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase instance;
