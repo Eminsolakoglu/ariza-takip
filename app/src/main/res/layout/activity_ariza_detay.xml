@@ -1,140 +1,533 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F8F9FA">
+    android:orientation="vertical"
+    android:background="@color/backgroundColor">
 
+    <!-- Header Bar -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:gravity="center_vertical"
+        android:background="@color/cardBackground">
 
-        <com.google.android.material.card.MaterialCardView
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/textColorPrimary"
+            android:contentDescription="Geri" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Arıza Detayı"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
+
+    <!-- 1dp divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/borderColor" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="#E9ECEF"
-            android:layout_marginBottom="32dp">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+            <!-- Main Info Card -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/borderColor"
+                app:cardBackgroundColor="@color/cardBackground"
+                android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:id="@+id/tvBaslik"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    android:textColor="#2B2D42"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvAciklama"
-                    android:layout_marginTop="12dp"
-                    android:textSize="15sp"
-                    android:lineSpacingExtra="6dp"
-                    android:textColor="#4A4E69"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    <!-- Başlık (tappable row) -->
+                    <LinearLayout
+                        android:id="@+id/rowBaslik"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="top"
+                        android:paddingHorizontal="24dp"
+                        android:paddingTop="24dp"
+                        android:paddingBottom="14dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#F1F3F5"
-                    android:layout_marginVertical="20dp"/>
+                        <TextView
+                            android:id="@+id/tvBaslik"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/textColorPrimary"
+                            android:lineSpacingExtra="2dp" />
+
+                        <TextView
+                            android:id="@+id/chevBaslik"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="22sp"
+                            android:textColor="@color/textColorMuted"
+                            android:paddingTop="2dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <!-- Açıklama (tappable row) -->
+                    <LinearLayout
+                        android:id="@+id/rowAciklama"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="top"
+                        android:paddingHorizontal="24dp"
+                        android:paddingBottom="20dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:id="@+id/tvAciklama"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:lineSpacingExtra="6dp"
+                            android:textColor="@color/textColorSecondary" />
+
+                        <TextView
+                            android:id="@+id/chevAciklama"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="22sp"
+                            android:textColor="@color/textColorMuted"
+                            android:paddingTop="2dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/borderColor" />
+
+                    <!-- Durum row -->
+                    <LinearLayout
+                        android:id="@+id/rowDurum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Durum"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvDurum"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/textColorPrimary" />
+
+                        <TextView
+                            android:id="@+id/chevDurum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="20sp"
+                            android:textColor="@color/textColorMuted"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Aciliyet row -->
+                    <LinearLayout
+                        android:id="@+id/rowAciliyet"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Aciliyet"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvAciliyet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="12dp"
+                            android:paddingVertical="5dp"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:text="Normal" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="1dp" />
+
+                        <TextView
+                            android:id="@+id/chevAciliyet"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="20sp"
+                            android:textColor="@color/textColorMuted"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Konum row -->
+                    <LinearLayout
+                        android:id="@+id/rowKonum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Konum"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvKonum"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/textColorPrimary" />
+
+                        <TextView
+                            android:id="@+id/chevKonum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="20sp"
+                            android:textColor="@color/textColorMuted"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Kategori row -->
+                    <LinearLayout
+                        android:id="@+id/rowKategori"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Kategori"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvKategori"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/textColorPrimary" />
+
+                        <TextView
+                            android:id="@+id/chevKategori"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="20sp"
+                            android:textColor="@color/textColorMuted"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Atanan row (admin tappable) -->
+                    <LinearLayout
+                        android:id="@+id/rowAtanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Atanan"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvAtanan"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/primaryColor" />
+
+                        <TextView
+                            android:id="@+id/chevAtanan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="›"
+                            android:textSize="20sp"
+                            android:textColor="@color/textColorMuted"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Açan row (read-only) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="15dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Açan"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvOlusturan"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/textColorSecondary" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="@color/borderColor"
+                        android:layout_marginHorizontal="24dp" />
+
+                    <!-- Tarih row (read-only) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="20dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="wrap_content"
+                            android:text="Tarih"
+                            android:textSize="12sp"
+                            android:textColor="@color/textColorMuted" />
+
+                        <TextView
+                            android:id="@+id/tvTarih"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp"
+                            android:textColor="@color/textColorMuted" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Image Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardGorseller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/borderColor"
+                app:cardBackgroundColor="@color/cardBackground">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/bg_meta_info"
-                    android:padding="16dp">
+                    android:padding="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="14dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Görseller"
+                            android:textColor="@color/textColorPrimary"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Maks. 3"
+                            android:textColor="@color/textColorMuted"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <HorizontalScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="none">
+
+                        <LinearLayout
+                            android:id="@+id/llImageSlots"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingVertical="4dp" />
+
+                    </HorizontalScrollView>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Durum Tarihçesi Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/borderColor"
+                app:cardBackgroundColor="@color/cardBackground">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="12dp">
 
                     <TextView
-                        android:id="@+id/tvDurum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Durum Tarihçesi"
+                        android:textColor="@color/textColorPrimary"
                         android:textSize="15sp"
                         android:textStyle="bold"
-                        android:textColor="#2B2D42"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"/>
+                        android:layout_marginBottom="12dp" />
 
-                    <TextView
-                        android:id="@+id/tvAtanan"
-                        android:textSize="14sp"
-                        android:textColor="@color/primaryColor"
-                        android:textStyle="bold"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/llLogList"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"/>
+                        android:orientation="vertical" />
 
-                    <TextView
-                        android:id="@+id/tvOlusturan"
-                        android:textSize="13sp"
-                        android:textColor="#6C757D"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"/>
-
-                    <TextView
-                        android:id="@+id/tvTarih"
-                        android:textSize="12sp"
-                        android:textColor="#ADB5BD"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
                 </LinearLayout>
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+            </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnDurum"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
-            android:text="DURUM GÜNCELLE"
-            app:backgroundTint="@color/primaryColor"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSil"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginBottom="8dp"
+                app:cornerRadius="10dp"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="ARIZA KAYDINI SİL"
+                android:textColor="@color/textColorMuted"
+                android:visibility="gone" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTeknikerAta"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="12dp"
-            app:cornerRadius="12dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:text="TEKNİKER ATA"
-            android:textColor="@color/primaryColor"
-            app:strokeColor="@color/primaryColor"
-            android:visibility="gone"/>
+        </LinearLayout>
+    </ScrollView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSil"
-            android:layout_marginTop="12dp"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="ARIZA KAYDINI SİL"
-            android:textColor="#D32F2F"
-            android:visibility="gone"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnBack"
-            android:layout_marginTop="24dp"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            app:cornerRadius="12dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="GERİ DÖN"
-            android:textColor="#6C757D"/>
-
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

@@ -14,9 +14,8 @@ public interface UserDao {
     @Insert
     void insert(User user);
 
-    // Girilen kullanıcı adı ve şifreyle eşleşen bir kayıt var mı diye veritabanına sorar
-    @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
-    User login(String username, String password);
+    @Query("SELECT * FROM users WHERE username = :username LIMIT 1")
+    User findByUsername(String username);
 
     // Veritabanında hiç kullanıcı var mı diye kontrol etmek için
     @Query("SELECT COUNT(*) FROM users")
